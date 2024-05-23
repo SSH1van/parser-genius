@@ -6,6 +6,7 @@ from href import get_all_song_links
 from song import get_lyrics
 
 
+# Функция разбивает текст песни на части, каждая из которых содержит не менее 20 слов
 def words20(lines):
     song_parts = []
     current_part = ''
@@ -24,12 +25,14 @@ def words20(lines):
     return song_parts
 
 
+# Функция записывает список строк в CSV-файл
 def append_to_csv(data, filename):
     with open(filename, mode='w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for row in data:
             writer.writerow([row])
 
+# Функция считывает строки из CSV-файла и возвращает их в виде списка
 def get_from_csv(filename):
     song_links = []
     with open(filename, newline='', encoding='utf-8') as csvfile:
@@ -38,6 +41,7 @@ def get_from_csv(filename):
             song_links.append(row[0])
     return song_links
 
+# Функция находит все пути к файлам 'urls.csv' в указанной корневой папке
 def find_csv_paths(root_folder):
     csv_paths = []
     for root, dirs, files in os.walk(root_folder):
@@ -46,6 +50,7 @@ def find_csv_paths(root_folder):
     return csv_paths
 
 
+# Основная функция, управляющая процессом получения ссылок на песни, их парсинга и сохранения
 def main():
     csv_paths = find_csv_paths('songs')
     os.makedirs('songs', exist_ok=True)
@@ -62,7 +67,7 @@ def main():
 
         print('\n------------------Получение ссылок на песни исполнителя------------------')
         song_links = get_all_song_links(url)
-        # song_links = ['https://genius.com/Og-buda-above-the-clouds-lyrics']
+        # song_links = ['https://genius.com/Markul-last-ticket-lyrics']
         
         os.makedirs('songs/' + author, exist_ok=True)
         append_to_csv(song_links, 'songs/' + author + '/urls.csv')
@@ -91,7 +96,6 @@ def main():
             
             print(str(num) + ' из ' + str(len(song_links)))
     print('\n-----------------------------Песни сохранены-----------------------------\n')
-
 
 
 
